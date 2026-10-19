@@ -139,6 +139,11 @@ The backend tests exercise the API health endpoint and verify that unauthenticat
 access to the current-user endpoint is rejected. They run without MongoDB because
 the Express app is exported independently from the database-connected server.
 
+Example GitHub Actions runs:
+
+- [Intentional test failure](https://github.com/DhrutiM39/momentum-task-manager/actions/runs/39208639467)
+- [Passing run after fixing the assertion](https://github.com/DhrutiM39/momentum-task-manager/actions/runs/39208721363)
+
 To demonstrate a failed run, temporarily change the expected health response
 message in `backend/__tests__/app.test.js`, commit and push the change to `main`,
 then open the failed run in **Actions** and inspect the test output. Restore the
