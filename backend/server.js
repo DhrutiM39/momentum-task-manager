@@ -1,3 +1,4 @@
+
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
@@ -10,6 +11,7 @@ const authenticateToken = require("./middleware/authenticateToken");
 const taskRoutes = require("./routes/taskRoutes");
 const authRoutes = require("./routes/authRoutes");
 const { cache, TTL_SECONDS } = require("./cache/taskCache");
+
 const PORT = process.env.PORT || 5000;
 
 require("./events/listeners");
@@ -30,8 +32,10 @@ app.get("/", (req, res) => {
 
 app.use("/api/tasks", taskRoutes);
 app.use("/api/auth", authRoutes);
+
 app.get("/api/debug/cache", authenticateToken, (req, res) => {
   const { hits, misses, keys } = cache.getStats();
+
   res.status(200).json({
     success: true,
     data: { hits, misses, keys, ttlSeconds: TTL_SECONDS }
@@ -47,20 +51,26 @@ app.use((req, res) => {
 
 app.use(errorHandler);
 
-if (!process.env.JWT_SECRET) {
-  console.error("JWT_SECRET must be set in backend/.env");
-  process.exit(1);
-}
+// Export the app for automated testing
+module.exports = app;
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("MongoDB connected");
+// Start the server only when this file is run directly
+if (require.main === module) {
+  if (!process.env.JWT_SECRET) {
+    console.error("JWT_SECRET must be set in backend/.env");
+    process.exit(1);
+  }
 
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+  mongoose
+    .connect(process.env.MONGO_URI)
+    .then(() => {
+      console.log("MongoDB connected");
+
+      app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+      });
+    })
+    .catch((err) => {
+      console.error("MongoDB connection error:", err);
     });
-  })
-  .catch((err) => {
-    console.error("MongoDB connection error:", err);
-  });
+}
