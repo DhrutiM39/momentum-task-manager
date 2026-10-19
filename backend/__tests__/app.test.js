@@ -7,7 +7,7 @@ describe("Task Manager API", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
-      message: "Task Manager API is running",
+      message: "Task Manager API is stopped",
       docs: "/api/tasks"
     });
   });
