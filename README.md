@@ -1,7 +1,5 @@
 # Task Manager — Full Stack (Practicals 5 and 6)
 
-[![CI Pipeline](https://github.com/DhrutiM39/momentum-task-manager/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/DhrutiM39/momentum-task-manager/actions/workflows/ci.yml)
-
 A React task board connected to an Express, Mongoose, and MongoDB CRUD API.
 
 ```
@@ -127,29 +125,6 @@ without additional setup. Set `JWT_SECRET` in the environment before running
 Compose to use a different value; do not use the default in a deployed
 environment. Docker build contexts exclude `node_modules`, `.env`, and generated
 frontend build files.
-
-## Practical 12: GitHub Actions CI
-
-The `.github/workflows/ci.yml` workflow runs on pushes to `main` and pull
-requests targeting `main`. It installs backend and frontend dependencies,
-runs backend API smoke tests, and builds the frontend. GitHub reports the job
-as passed or failed in the Actions tab and on the badge above.
-
-The backend tests exercise the API health endpoint and verify that unauthenticated
-access to the current-user endpoint is rejected. They run without MongoDB because
-the Express app is exported independently from the database-connected server.
-
-Example GitHub Actions runs:
-
-- [Intentional test failure](https://github.com/DhrutiM39/momentum-task-manager/actions/runs/39208639467)
-- [Passing run after fixing the assertion](https://github.com/DhrutiM39/momentum-task-manager/actions/runs/39208721363)
-
-To demonstrate a failed run, temporarily change the expected health response
-message in `backend/__tests__/app.test.js`, commit and push the change to `main`,
-then open the failed run in **Actions** and inspect the test output. Restore the
-correct expected message in a follow-up commit and push again to observe a
-passing run. Do not leave the intentionally broken assertion in the final code.
-Capture screenshots of both actual Actions runs for the lab journal.
 
 ## What the frontend does
 
